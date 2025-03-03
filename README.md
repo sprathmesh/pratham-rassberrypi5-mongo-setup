@@ -215,19 +215,19 @@ spec:
             claimName: mongo-pvc
 
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo-service
-spec:
-  selector:
-    app: mongo
-  ports:
-    - protocol: TCP
-      port: 27017
-      targetPort: 27017
-      nodePort: 32017
-  type: NodePort
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: mongo-service
+#spec:
+# selector:
+#    app: mongo
+#  ports:
+#    - protocol: TCP
+#      port: 27017
+#      targetPort: 27017
+#      nodePort: 32017
+#  type: NodePort
 
 
 ---
