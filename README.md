@@ -148,10 +148,9 @@ This will completely remove MongoDB and its associated data.
 ---
 
 ### ✅ You have successfully installed MongoDB 8.0 on your Raspberry Pi 5! 🚀
-
+# ------------------------------INSTED of manual step you can apply this below YAML with some CONFIG changes according your need --------------------------------
 
 # OR you Directly apply this YAML file
----
 ```
 ---
 apiVersion: v1
