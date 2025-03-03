@@ -245,6 +245,7 @@ spec:
       targetPort: 27017
   type: ClusterIP
 ```
+#-------------------------OR insted of this manual step you directly apply this YAML with some Config changes according your need -----------------------------
 # OR IF you want to use NodePort Insted of ClusterIP use this service yaml
 
 ```
