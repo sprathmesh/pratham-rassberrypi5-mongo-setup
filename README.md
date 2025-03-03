@@ -151,7 +151,21 @@ This will completely remove MongoDB and its associated data.
 
 
 # OR you Directly apply this YAML file
+---
 ```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/home/admin1/MongoDB/data"  # Custom storage path on Raspberry Pi and before apply the yaml youe need to create this manually (mkdir -p /home/admin1/MongoDB/data) after that chmod 777 /home/admin1/MongoDB/data) 
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
