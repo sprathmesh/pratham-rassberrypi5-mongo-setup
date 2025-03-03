@@ -226,3 +226,11 @@ spec:
       targetPort: 27017
   type: ClusterIP
 ```
+# OR IF you want to use NodePort Insted of ClusterIP use this service yaml
+
+```
+Updated Service YAML (Using NodePort)
+yaml
+Copy
+Edit
+```
