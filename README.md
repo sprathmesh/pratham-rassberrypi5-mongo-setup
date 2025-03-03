@@ -153,18 +153,21 @@ This will completely remove MongoDB and its associated data.
 # OR you Directly apply this YAML file
 ---
 ```
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mongo-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 5Gi  # Ensure it matches PVC
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual  # Explicitly set storage class
   hostPath:
-    path: "/home/admin1/MongoDB/data"  # Custom storage path on Raspberry Pi and before apply the yaml youe need to create this manually (mkdir -p /home/admin1/MongoDB/data) after that chmod 777 /home/admin1/MongoDB/data) 
+    path: "/data"  # ✅ Store MongoDB data directly in /data
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -175,7 +178,9 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi  # ✅ Matches PV size
+  storageClassName: manual  # Match PV's storage class
+  volumeName: mongo-pv  # Ensure PVC binds to the correct PV
 
 ---
 apiVersion: apps/v1
@@ -204,27 +209,27 @@ spec:
               value: "password"
           volumeMounts:
             - name: mongo-storage
-              mountPath: /data/db
-          livenessProbe:
-            exec:
-              command:
-                - mongosh
-                - --eval
-                - "db.adminCommand('ping')"
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            exec:
-              command:
-                - mongosh
-                - --eval
-                - "db.adminCommand('ping')"
-            initialDelaySeconds: 10
-            periodSeconds: 5
+              mountPath: /data/db  # ✅ MongoDB will write to /data/db inside the container
       volumes:
         - name: mongo-storage
           persistentVolumeClaim:
             claimName: mongo-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+      nodePort: 32017
+  type: NodePort
+
 
 ---
 apiVersion: v1
