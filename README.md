@@ -229,8 +229,19 @@ spec:
 # OR IF you want to use NodePort Insted of ClusterIP use this service yaml
 
 ```
-Updated Service YAML (Using NodePort)
-yaml
-Copy
-Edit
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+      nodePort: 32017  # Expose MongoDB on this port (range: 30000-32767)
+  type: NodePort
+
 ```
