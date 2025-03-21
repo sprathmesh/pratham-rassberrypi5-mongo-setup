@@ -218,7 +218,7 @@ spec:
 #apiVersion: v1
 #kind: Service
 #metadata:
-#  name: mongo-service
+#  name: mongo
 #spec:
 # selector:
 #    app: mongo
@@ -234,7 +234,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-service
+  name: mongo
 spec:
   selector:
     app: mongo
@@ -252,7 +252,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-service
+  name: mongo
 spec:
   selector:
     app: mongo
