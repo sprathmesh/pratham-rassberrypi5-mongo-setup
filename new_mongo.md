@@ -1,6 +1,10 @@
 # pratham-rassberrypi5-mongo-setup
-pratham-rassberrypi5-mongo-setup
----
+
+This repository contains the Kubernetes deployment configuration for setting up MongoDB on a Raspberry Pi 5.
+
+## Deployment Configuration
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,26 +31,11 @@ spec:
               value: "devops"
           volumeMounts:
             - name: mongo-storage
-              mountPath: /data/db  # ✅ MongoDB will write to /data/db inside the container
+              mountPath: /data/db
       volumes:
         - name: mongo-storage
           persistentVolumeClaim:
             claimName: mongo-pvc
-
----
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: mongo-service
-#spec:
-#  selector:
-#    app: mongo
-#  ports:
-#    - protocol: TCP
-#      port: 27017
-#      targetPort: 27017
-#      nodePort: 32017
-#  type: NodePort
 ---
 apiVersion: v1
 kind: Service
@@ -60,21 +49,20 @@ spec:
       port: 27017
       targetPort: 27017
   type: ClusterIP
---
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mongo-pv
 spec:
   capacity:
-    storage: 5Gi  # Ensure it matches PVC
+    storage: 5Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual  # Explicitly set storage class
+  storageClassName: manual
   hostPath:
-    path: "/data"  # ✅ Store MongoDB data directly in /data
-
+    path: "/data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -85,8 +73,22 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi  # ✅ Matches PV size
-  storageClassName: manual  # Match PV's storage class
-  volumeName: mongo-pv  # Ensure PVC binds to the correct PV
+      storage: 5Gi
+  storageClassName: manual
+  volumeName: mongo-pv
+```  
 
----
+## Usage
+1. Apply the configuration to your Kubernetes cluster:
+   ```sh
+   kubectl apply -f mongo-deployment.yaml
+   ```
+2. Verify the deployment:
+   ```sh
+   kubectl get pods
+   ```
+3. Check the service:
+   ```sh
+   kubectl get svc mongo
+   ```
+
